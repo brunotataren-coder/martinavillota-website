@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SketchRoom | Mini Paint</title>
+    <meta
+      name="description"
+      content="Aplicacion web para dibujar a mano alzada estilo paint, con una interfaz visual moderna."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;700&family=Sora:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="paint.css" />
+  </head>
+  <body>
+    <div class="bg-orb bg-orb-a" aria-hidden="true"></div>
+    <div class="bg-orb bg-orb-b" aria-hidden="true"></div>
+
+    <main class="paint-app">
+      <header class="control-panel">
+        <div class="brand">
+          <p class="brand-kicker">Dibujo libre</p>
+          <h1>SketchRoom</h1>
+          <p class="brand-copy">Tu lienzo digital estilo Paint, pero mas elegante.</p>
+        </div>
+
+        <div class="toolbar">
+          <div class="tool-row">
+            <button id="tool-pencil" class="tool-btn is-active" type="button">Pincel</button>
+            <button id="tool-eraser" class="tool-btn" type="button">Borrador</button>
+          </div>
+
+          <div class="tool-row">
+            <label class="control">
+              <span>Color</span>
+              <input id="color-picker" type="color" value="#1f3a5f" />
+            </label>
+
+            <label class="control control-range">
+              <span>Grosor</span>
+              <input id="size-picker" type="range" min="1" max="50" value="7" />
+              <output id="size-value" for="size-picker">7 px</output>
+            </label>
+          </div>
+
+          <div class="tool-row">
+            <button id="undo-action" class="action-btn" type="button">Deshacer</button>
+            <button id="redo-action" class="action-btn" type="button">Rehacer</button>
+            <button id="clear-canvas" class="action-btn danger" type="button">Limpiar</button>
+            <button id="save-image" class="action-btn primary" type="button">Guardar PNG</button>
+          </div>
+        </div>
+      </header>
+
+      <section class="canvas-panel">
+        <canvas id="paint-canvas" aria-label="Lienzo para dibujar"></canvas>
+        <p class="hint">Tip: usa Ctrl/Cmd + Z para deshacer y Ctrl/Cmd + Shift + Z para rehacer.</p>
+      </section>
+
+      <section class="mail-panel" aria-live="polite">
+        <div class="mail-head">
+          <div>
+            <p class="mail-kicker">Bandeja</p>
+            <h2>Ultimos 3 mails</h2>
+          </div>
+          <button id="refresh-mails" class="action-btn" type="button">Actualizar</button>
+        </div>
+
+        <p id="mail-status" class="mail-status">Cargando correos...</p>
+        <ul id="mail-list" class="mail-list"></ul>
+      </section>
+    </main>
+
+    <script src="paint.js"></script>
+  </body>
+</html>

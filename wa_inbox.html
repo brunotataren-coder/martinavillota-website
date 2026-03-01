@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Andres Branding Inbox</title>
+  <style>
+    :root {
+      --bg: #f2f4f7;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #475569;
+      --line: #dbe1ea;
+      --cta: #0f766e;
+      --cta-text: #ffffff;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      color: var(--text);
+      background: linear-gradient(170deg, #f8fafc, var(--bg));
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+    .card {
+      width: min(760px, 100%);
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      box-shadow: 0 16px 40px rgba(2, 6, 23, 0.08);
+      padding: 20px;
+    }
+    h1 {
+      margin: 0 0 8px;
+      font-size: 28px;
+    }
+    p {
+      margin: 0 0 18px;
+      color: var(--muted);
+    }
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 700;
+      margin: 14px 0 6px;
+    }
+    input, textarea, button {
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      font: inherit;
+    }
+    input, textarea {
+      padding: 12px;
+      background: #fff;
+    }
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+    button {
+      margin-top: 14px;
+      padding: 12px 16px;
+      border: 0;
+      background: var(--cta);
+      color: var(--cta-text);
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .status {
+      margin-top: 12px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 14px;
+      display: none;
+      white-space: pre-wrap;
+    }
+    .status.ok { display: block; background: #ecfdf5; color: #166534; border: 1px solid #a7f3d0; }
+    .status.err { display: block; background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    @media (max-width: 700px) {
+      .row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <h1>Andres Branding Inbox</h1>
+    <p>Envio manual de mensajes WhatsApp en produccion usando tu sender de Twilio.</p>
+    <div class="row">
+      <div>
+        <label for="to">Numero destino (buyer)</label>
+        <input id="to" placeholder="+56998732932">
+      </div>
+      <div>
+        <label for="quick">Atajos</label>
+        <input id="quick" placeholder="Ej: Hola, soy Andres Branding." value="Hola, soy Andres Branding. Te ayudo con tu compra.">
+      </div>
+    </div>
+    <label for="body">Mensaje</label>
+    <textarea id="body" placeholder="Escribe el mensaje aqui..."></textarea>
+    <button id="sendBtn" type="button">Enviar por WhatsApp</button>
+    <div id="status" class="status"></div>
+  </main>
+
+  <script>
+    const toInput = document.getElementById("to");
+    const quickInput = document.getElementById("quick");
+    const bodyInput = document.getElementById("body");
+    const sendBtn = document.getElementById("sendBtn");
+    const statusBox = document.getElementById("status");
+
+    quickInput.addEventListener("input", () => {
+      if (!bodyInput.value.trim()) bodyInput.value = quickInput.value;
+    });
+    bodyInput.value = quickInput.value;
+
+    function setStatus(type, msg) {
+      statusBox.className = `status ${type}`;
+      statusBox.textContent = msg;
+    }
+
+    sendBtn.addEventListener("click", async () => {
+      const to = toInput.value.trim();
+      const body = bodyInput.value.trim();
+      if (!to || !body) {
+        setStatus("err", "Completa numero destino y mensaje.");
+        return;
+      }
+
+      sendBtn.disabled = true;
+      try {
+        const response = await fetch("/api/whatsapp/send", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ to, body })
+        });
+        const data = await response.json();
+        if (!response.ok || !data.success) {
+          throw new Error(data.error || "No se pudo enviar.");
+        }
+        const tw = data.twilio || {};
+        setStatus("ok", `Enviado.\nSID: ${tw.sid || "-"}\nStatus: ${tw.status || "-"}`);
+      } catch (error) {
+        setStatus("err", `Error: ${error.message}`);
+      } finally {
+        sendBtn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

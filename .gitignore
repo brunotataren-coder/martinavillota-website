@@ -1,0 +1,9 @@
+.vercel
+.venv311
+.env
+.venv/
+__pycache__/
+merchant_pay_demo.db
+assets/candidate-*
+assets/*drive-download*
+assets/*.bak

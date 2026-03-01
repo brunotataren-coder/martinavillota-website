@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HubSpot Clone CRM</title>
+    <meta
+      name="description"
+      content="Clon CRM read-only para explorar deals, pipelines, contactos y empresas desde HubSpot."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/hubspot.css" />
+    <script defer src="/hubspot.js"></script>
+  </head>
+  <body>
+    <main class="crm-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">HubSpot Clone</p>
+          <h1>CRM Explorer</h1>
+        </div>
+        <div class="top-actions">
+          <span id="connection-status" class="status-pill">Inicializando...</span>
+          <button id="force-refresh" type="button" class="ghost-button">Force refresh</button>
+          <a href="/" class="ghost-link">Demo pagos</a>
+        </div>
+      </header>
+
+      <section id="alert" class="alert hidden"></section>
+
+      <nav class="tabs" aria-label="Módulos CRM">
+        <button class="tab active" data-tab="deals" type="button">Deals</button>
+        <button class="tab" data-tab="pipelines" type="button">Pipelines</button>
+        <button class="tab" data-tab="contacts" type="button">Contactos</button>
+        <button class="tab" data-tab="companies" type="button">Empresas</button>
+      </nav>
+
+      <section class="controls">
+        <div class="search-group">
+          <label for="search-input" class="sr-only">Buscar</label>
+          <input
+            id="search-input"
+            type="search"
+            placeholder="Buscar por nombre, email, dominio o deal..."
+            autocomplete="off"
+          />
+          <button id="search-button" type="button">Buscar</button>
+        </div>
+
+        <div id="deal-filters" class="deal-filters">
+          <label for="pipeline-filter" class="sr-only">Pipeline</label>
+          <select id="pipeline-filter">
+            <option value="">Todos los pipelines</option>
+          </select>
+
+          <label for="stage-filter" class="sr-only">Stage</label>
+          <select id="stage-filter">
+            <option value="">Todos los stages</option>
+          </select>
+        </div>
+      </section>
+
+      <section class="content-grid">
+        <article class="table-card">
+          <header class="table-header">
+            <div>
+              <p class="table-eyebrow">Módulo</p>
+              <h2 id="table-title">Deals</h2>
+            </div>
+            <p id="table-meta" class="table-meta">0 resultados</p>
+          </header>
+
+          <div class="table-wrap">
+            <table id="data-table">
+              <thead></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+
+          <footer class="pager">
+            <button id="prev-page" type="button">Anterior</button>
+            <span id="page-indicator">Página 1</span>
+            <button id="next-page" type="button">Siguiente</button>
+          </footer>
+        </article>
+
+        <aside class="detail-card">
+          <header>
+            <p class="table-eyebrow">Panel</p>
+            <h2>Detalle</h2>
+          </header>
+
+          <div id="detail-empty" class="detail-empty">
+            Selecciona un registro para ver propiedades y asociaciones.
+          </div>
+
+          <div id="detail-body" class="detail-body hidden">
+            <section class="detail-block">
+              <h3 id="detail-title">-</h3>
+              <p id="detail-subtitle" class="detail-subtitle"></p>
+            </section>
+
+            <section class="detail-block">
+              <h4>Propiedades</h4>
+              <dl id="detail-properties" class="detail-list"></dl>
+            </section>
+
+            <section class="detail-block">
+              <h4>Asociaciones</h4>
+              <div id="detail-associations" class="association-list"></div>
+            </section>
+          </div>
+        </aside>
+      </section>
+    </main>
+  </body>
+</html>

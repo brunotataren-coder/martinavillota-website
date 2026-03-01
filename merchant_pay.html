@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WhatsApp Commerce Pay Demo</title>
+    <meta
+      name="description"
+      content="Demo de pagos a comercio en chat 1:1 con confirmacion por boton."
+    />
+    <link rel="stylesheet" href="/merchant_pay.css" />
+    <script defer src="/merchant_pay.js"></script>
+  </head>
+  <body>
+    <main class="layout">
+      <aside class="panel">
+        <h1>WhatsApp Commerce Pay</h1>
+        <p class="subtitle">
+          Flujo demo 1:1 cliente-comercio, 100% en chat, sin links ni QR.
+        </p>
+
+        <section class="card">
+          <h2>Participantes</h2>
+          <div class="participant">
+            <div>
+              <p class="label">Comercio</p>
+              <p id="merchant-name" class="name">-</p>
+              <p id="merchant-phone" class="phone">-</p>
+            </div>
+            <p id="merchant-balance" class="balance">0.00 USDC</p>
+          </div>
+          <div class="participant">
+            <div>
+              <p class="label">Cliente</p>
+              <p id="customer-name" class="name">-</p>
+              <p id="customer-phone" class="phone">-</p>
+            </div>
+            <p id="customer-balance" class="balance">0.00 USDC</p>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>Metricas</h2>
+          <div class="metric-row">
+            <span>Ventas hoy</span>
+            <strong id="sales-today">0.00 USDC</strong>
+          </div>
+          <div class="metric-row">
+            <span>Transacciones hoy</span>
+            <strong id="tx-count">0</strong>
+          </div>
+          <div class="metric-row">
+            <span>Fee</span>
+            <strong id="fee-rate">1.00%</strong>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>Wallet</h2>
+          <div class="metric-row">
+            <span>Proveedor</span>
+            <strong id="wallet-provider">-</strong>
+          </div>
+          <div class="metric-row">
+            <span>Red</span>
+            <strong id="wallet-network">-</strong>
+          </div>
+          <p class="wallet-label">Comercio</p>
+          <p id="merchant-wallet" class="wallet-address">-</p>
+          <p class="wallet-label">Cliente</p>
+          <p id="customer-wallet" class="wallet-address">-</p>
+          <p id="wallet-note" class="wallet-note">-</p>
+        </section>
+
+        <button id="reset-demo" class="secondary full-width" type="button">
+          Reset demo
+        </button>
+      </aside>
+
+      <section class="chat-shell">
+        <header class="chat-top">
+          <div>
+            <p class="label">Chat del comercio</p>
+            <p class="chat-title">Pizzeria Napoli</p>
+          </div>
+          <span id="connection-status" class="status">Sincronizando...</span>
+        </header>
+
+        <div id="message-list" class="message-list" aria-live="polite"></div>
+
+        <section id="pending-card" class="pending-card hidden">
+          <div>
+            <p class="label">Solicitud pendiente</p>
+            <p id="pending-summary" class="pending-summary">-</p>
+            <p id="pending-expiry" class="pending-expiry">-</p>
+          </div>
+          <div class="pending-actions">
+            <button id="confirm-payment" type="button">Confirmar pago</button>
+            <button id="cancel-payment" class="secondary" type="button">Cancelar</button>
+          </div>
+        </section>
+
+        <form id="chat-form" class="composer">
+          <label for="actor-select" class="sr-only">Actor</label>
+          <select id="actor-select" name="actor">
+            <option value="customer">Cliente</option>
+            <option value="merchant">Comercio</option>
+          </select>
+
+          <label for="chat-input" class="sr-only">Mensaje</label>
+          <input
+            id="chat-input"
+            name="text"
+            type="text"
+            placeholder="Escribe: cobrar 10 usd, pagar 10 usd, ventas hoy..."
+            autocomplete="off"
+            required
+          />
+          <button id="send-message" type="submit">Enviar</button>
+        </form>
+
+        <div class="quick-actions">
+          <button class="quick" data-actor="merchant" data-template="cobrar 10 usd" type="button">
+            Comercio: cobrar 10 usd
+          </button>
+          <button class="quick" data-actor="customer" data-template="pagar 10 usd" type="button">
+            Cliente: pagar 10 usd
+          </button>
+          <button class="quick" data-actor="merchant" data-template="ventas hoy" type="button">
+            Comercio: ventas hoy
+          </button>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
